@@ -39,19 +39,17 @@ int main() {
 
     // tmp variables
     string title;
-    string buf;
     Node* head = nullptr;
     Node* review = nullptr;
     // Read data
     ifstream fin("data.txt");
     if (!fin.good()) cout << "Input file not found.";
-    while (fin.good()){
+    while (fin.good()){ // parse file
         getline(fin, title);
-        for (int i = 0; i < REVIEW_COUNT; i++){
+        for (int i = 0; i < REVIEW_COUNT; i++){ // loop through reviews
             review = new Node;
-            getline(fin, buf);
-            review->rating = stof(buf);
             getline(fin, review->comment);
+            review->rating = (1 + rand()%8) / 2;
             pushFront(&head, review);
         }
         Movie m = Movie(title, head);
@@ -61,7 +59,16 @@ int main() {
     // output
     cout << "Outputing Movies:\n";
     for (Movie movie : movies){
-        cout << "Title: " << movie.getTitle();
+        cout << "Title: " << movie.getTitle() << endl;
+        cout << "Reviews:";
+        Node *curr = movie.getHead();
+        int i = 0;
+        while (curr){ // loop through linked list
+            i++;
+            cout << "\n\t> #" << i << ": " << curr->rating << ": " << curr->comment;
+            curr = curr->next;
+        }
+        cout << endl;
     }
 
     return 0;
