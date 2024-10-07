@@ -21,7 +21,7 @@ private:
 public:
     // Constructors
     Movie() {title = ""; head = nullptr;}
-    Movie(string t) {title = t; head = nullptr;}
+    Movie(string t, Node* h) {title = t; head = h;}
 
     // Getters and setters
     string getTitle() const {return title;}
@@ -37,12 +37,31 @@ void deleteList(Node **head); // Deletes entire list
 int main() {
     vector<Movie> movies;
 
+    // tmp variables
+    string title;
+    string buf;
+    Node* head = nullptr;
+    Node* review = nullptr;
     // Read data
     ifstream fin("data.txt");
     if (!fin.good()) cout << "Input file not found.";
     while (fin.good()){
-        Movie tmp;
-        
+        getline(fin, title);
+        for (int i = 0; i < REVIEW_COUNT; i++){
+            review = new Node;
+            getline(fin, buf);
+            review->rating = stof(buf);
+            getline(fin, review->comment);
+            pushFront(&head, review);
+        }
+        Movie m = Movie(title, head);
+        movies.push_back(m);
+    }
+
+    // output
+    cout << "Outputing Movies:\n";
+    for (Movie movie : movies){
+        cout << "Title: " << movie.getTitle();
     }
 
     return 0;
