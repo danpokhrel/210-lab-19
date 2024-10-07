@@ -45,11 +45,12 @@ int main() {
     ifstream fin("data.txt");
     if (!fin.good()) cout << "Input file not found.";
     while (fin.good()){ // parse file
+        head = new Node;
         getline(fin, title);
         for (int i = 0; i < REVIEW_COUNT; i++){ // loop through reviews
             review = new Node;
             getline(fin, review->comment);
-            review->rating = (1 + rand()%8) / 2;
+            review->rating = (float)(10 + rand() % 41) / 10.0; // random number between 1.0 and 5.0
             pushFront(&head, review);
         }
         Movie m = Movie(title, head);
@@ -63,11 +64,13 @@ int main() {
         cout << "Reviews:";
         Node *curr = movie.getHead();
         int i = 0;
-        while (curr){ // loop through linked list
+        while (curr->next){ // loop through linked list
             i++;
             cout << "\n\t> #" << i << ": " << curr->rating << ": " << curr->comment;
             curr = curr->next;
         }
+        curr = movie.getHead();
+        deleteList(&curr); // cleanup
         cout << endl;
     }
 
